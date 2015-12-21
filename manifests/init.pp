@@ -17,7 +17,7 @@ class swrepo (
         '10': {
           fail('Suse 10 not yet supported')
         }
-        '11': {
+        '11','12': {
           $default_repotype = 'zypper'
         }
         default: {
@@ -32,6 +32,7 @@ class swrepo (
       fail("Supported osfamilies are RedHat, Suse and Debian. Yours identified as <${::osfamily}>")
     }
   }
+
 
   if $repotype == 'USE_DEFAULT' {
     $_repotype = $default_repotype
@@ -59,4 +60,5 @@ class swrepo (
     validate_hash($repos_real)
     create_resources('swrepo::repo', $repos_real, $defaults)
   }
+
 }

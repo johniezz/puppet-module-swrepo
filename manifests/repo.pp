@@ -5,42 +5,37 @@
 define swrepo::repo (
   $repotype,
   $baseurl,
-  $enabled          = '1',
-  $autorefresh      = undef,
-  $gpgcheck         = undef,
-  $gpgkey_keyid     = undef,
-  $gpgkey_source    = undef,
-  $priority         = undef,
-  $keeppackages     = undef,
-  $type             = undef,
-  $descr            = undef,
-  $exclude          = undef,
-  $proxy            = undef,
-  $downcase_baseurl = false,
+  $enabled       = '1',
+  $autorefresh   = undef,
+  $gpgcheck      = undef,
+  $gpgkey_keyid  = undef,
+  $gpgkey_source = undef,
+  $priority      = undef,
+  $keeppackages  = undef,
+  $type          = undef,
+  $descr         = undef,
+  $exclude       = undef,
+  $proxy         = undef,
+  $http_caching  = undef,
 ) {
-
-  if $downcase_baseurl {
-    $baseurl_real = downcase($baseurl)
-  } else {
-    $baseurl_real = $baseurl
-  }
 
   case $repotype {
     'yum': {
       yumrepo { $name:
-        baseurl  => $baseurl_real,
-        descr    => $descr,
-        enabled  => $enabled,
-        gpgcheck => $gpgcheck,
-        gpgkey   => $gpgkey_source,
-        priority => $priority,
-        exclude  => $exclude,
-        proxy    => $proxy,
+        baseurl      => downcase($baseurl),
+        descr        => $descr,
+        enabled      => $enabled,
+        gpgcheck     => $gpgcheck,
+        gpgkey       => $gpgkey_source,
+        priority     => $priority,
+        exclude      => $exclude,
+        proxy        => $proxy,
+        http_caching =>$http_caching,
       }
     }
     'zypper': {
       zypprepo { $name:
-        baseurl      => $baseurl_real,
+        baseurl      => downcase($baseurl),
         descr        => $descr,
         enabled      => $enabled,
         gpgcheck     => $gpgcheck,
@@ -48,7 +43,6 @@ define swrepo::repo (
         priority     => $priority,
         keeppackages => $keeppackages,
         type         => $type,
-        autorefresh  => $autorefresh,
       }
     }
     'apt': {
